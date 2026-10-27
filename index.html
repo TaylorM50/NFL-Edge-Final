@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>NFL Edge — Advanced Football Analytics</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">NE</span><span>NFL <b>EDGE</b><small>THE NUMBERS BEHIND THE GAME</small></span></a>
+  <div class="top-right"><span class="live-dot"></span><span id="data-status">Connecting to data…</span><button id="refresh-btn" class="refresh">↻ Refresh</button></div>
+</header>
+<main>
+  <section class="hero">
+    <div><p class="eyebrow">NFL ANALYTICS • DATA-DRIVEN FOOTBALL</p><h1>Find the <em>edge.</em></h1><p class="hero-copy">Team efficiency, player production, matchup context, and probability-based game predictions powered by real NFL play-by-play data.</p></div>
+    <div class="hero-card"><div class="hero-card-label">DATA FEED</div><div class="hero-card-value" id="season-label">Current season</div><div class="hero-card-foot">Latest available upstream data · refreshable</div></div>
+  </section>
+  <section class="stat-strip">
+    <article><span>TEAMS TRACKED</span><strong id="teams-count">32</strong><small>All NFL franchises</small></article>
+    <article><span>GAMES IN FEED</span><strong id="games-count">—</strong><small>Games with available results</small></article>
+    <article><span>TOP OFFENSE</span><strong id="top-offense">Loading</strong><small>By points per game</small></article>
+    <article><span>LAST UPDATED</span><strong id="updated-at">—</strong><small>Published data package</small></article>
+  </section>
+  <nav class="tabs" aria-label="Dashboard sections">
+    <button class="tab active" data-tab="teams">Team rankings</button>
+    <button class="tab" data-tab="players">Player leaders</button>
+    <button class="tab" data-tab="matchups">Game predictions</button>
+    <button class="tab" data-tab="about">Methodology</button>
+  </nav>
+  <section class="panel active" id="panel-teams">
+    <div class="section-head"><div><p class="eyebrow">POWER RANKINGS</p><h2>Team efficiency</h2><p>Compare production, efficiency, and ball security.</p></div><div class="controls"><input id="team-search" type="search" placeholder="Search teams…" aria-label="Search teams"><select id="team-sort" aria-label="Sort teams"><option value="points">Points per game</option><option value="epa">EPA per play</option><option value="yards">Yards per game</option><option value="success">Success rate</option><option value="turnovers">Fewest turnovers</option></select></div></div>
+    <div class="table-wrap"><table><thead><tr><th>#</th><th>TEAM</th><th>W-L</th><th>PTS/G</th><th>YDS/G</th><th>EPA/PLAY</th><th>SUCCESS</th><th>TURNOVERS</th></tr></thead><tbody id="teams-body"><tr><td colspan="8" class="empty">Loading real team data…</td></tr></tbody></table></div>
+    <p class="source-note">Team logos are loaded from ESPN's public CDN. Metrics come from nflverse play-by-play/statistics feeds. Missing values display as —, never as fabricated stats.</p>
+  </section>
+  <section class="panel" id="panel-players">
+    <div class="section-head"><div><p class="eyebrow">INDIVIDUAL PRODUCTION</p><h2>Player leaders</h2><p>Rank actual player production from the latest available weekly feed.</p></div><div class="controls"><input id="player-search" type="search" placeholder="Search players…" aria-label="Search players"><select id="player-sort" aria-label="Player stat category"><option value="pass_yards">Passing yards</option><option value="pass_tds">Passing TDs</option><option value="rush_yards">Rushing yards</option><option value="rec_yards">Receiving yards</option><option value="rec_tds">Receiving TDs</option><option value="fantasy_points">Fantasy points</option></select></div></div>
+    <div class="table-wrap"><table><thead><tr><th>#</th><th>PLAYER</th><th>TEAM</th><th>POS</th><th>G</th><th id="player-metric-heading">PASS YDS</th><th>PASS TD</th><th>RUSH YDS</th><th>REC YDS</th></tr></thead><tbody id="players-body"><tr><td colspan="9" class="empty">Loading real player data…</td></tr></tbody></table></div>
+    <p class="source-note">Player tables aggregate season-to-date weekly stats where the upstream feed provides them. Player EPA and pressure-related metrics are sourced/calculated only where reliable play-level data exists.</p>
+  </section>
+  <section class="panel" id="panel-matchups">
+    <div class="section-head"><div><p class="eyebrow">PREDICTIVE MODEL</p><h2>Game predictions</h2><p>Use recent efficiency, scoring differential, and home field—not just win-loss records.</p></div></div>
+    <div class="prediction-form"><label>Home team<select id="home-team"></select></label><label>Away team<select id="away-team"></select></label><button id="predict-btn" class="primary">Analyze matchup</button></div>
+    <div id="prediction-result" class="prediction-result"><div class="empty">Choose two teams to estimate win probability, expected score, and the biggest statistical edges.</div></div>
+    <h3 class="subheading">Recent completed games</h3><div id="recent-games" class="games-grid"><p class="empty">Loading game results…</p></div>
+    <p class="source-note">Predictions are model estimates, not guarantees or betting advice. They are not a substitute for verified injury reports, weather, lineups, or market odds.</p>
+  </section>
+  <section class="panel" id="panel-about">
+    <div class="section-head"><div><p class="eyebrow">TRANSPARENCY</p><h2>What the numbers mean</h2><p>Built to distinguish measured stats from model estimates.</p></div></div>
+    <div class="method-grid">
+      <article><h3>EPA per play</h3><p>Expected Points Added measures how much a play changes a team's expected points, using nflverse play-by-play EPA when available.</p></article>
+      <article><h3>Success rate</h3><p>Share of plays with positive EPA when the feed includes EPA. This is a useful efficiency measure, not a measure of explosive plays alone.</p></article>
+      <article><h3>Risk-worthy throws</h3><p>There is no universal official NFL statistic with this name. NFL Edge does not pretend to have a proprietary charting grade. Where play-by-play supports it, interception-worthy outcomes can be shown as a limited proxy; this is not equivalent to charted risky throws.</p></article>
+      <article><h3>Pressure rate</h3><p>Pressure rate requires dependable pass-rush charting. When pressure fields are missing, the dashboard leaves the metric unavailable rather than inventing a precise-looking value. Sacks are not a valid substitute for all pressures.</p></article>
+      <article><h3>Predictions</h3><p>Win probability uses an intentionally simple, explainable logistic model based on team scoring margin and EPA/play, with a modest home-field adjustment. It can pick an underdog when the metrics justify it.</p></article>
+      <article><h3>Refresh cadence</h3><p>GitHub Actions downloads upstream data on a schedule and commits a static JSON package. This is automatically refreshed data, not a second-by-second live play feed. Refresh can also be triggered manually in GitHub Actions.</p></article>
+    </div>
+  </section>
+  <footer><span>NFL EDGE</span><span>Independent analytics project · Verify important stats against official sources</span></footer>
+</main>
+<script src="app.js"></script>
+</body></html>
